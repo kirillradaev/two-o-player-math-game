@@ -17,29 +17,28 @@ class Game
     @players << Player.new(user2, 3)
 
     puts "Let the the mind combat begin!"
-    while @players[0][@lives] > 0 && @players[1][@lives] > 0
+    while @players[0].lives > 0 && @players[1].lives > 0
       @current_player = @players.shift
+      @players << @current_player
       results = @question.ask
       correct_answer?(results.to_i)
-      @players << @current_player
     end
+    game_over
   end
  
   def correct_answer? (answers)
     if @question.correct == answers
       puts "YES! You are correct"
-      puts "P1: #{@lives}/3 lives vs P2: #{@lives}/3 lives"
-      puts "-------NEW TURN-------"
     else
       puts "Seriously? NO!"
-      # @current_player[@lives] -= 1
-      puts "P1: lives vs P2: lives"
-      puts "-------NEW TURN-------"
+      @current_player.lives -= 1
     end
+    puts "#{@players[0].name}: #{@players[0].lives}/3 lives vs #{@players[1].name}: #{@players[1].lives}/3 lives"
+    puts "-------NEW TURN-------"
   end
 
   def game_over
-    puts " wins with a score of 1/3"
+    puts "#{@players[0].name} wins with a score of #{@players[0].lives}/3"
     puts "---- That's it folks!----"
   end
 
